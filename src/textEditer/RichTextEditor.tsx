@@ -74,7 +74,7 @@ const RichTextEditor = () => {
       )}
 
       <div className="actions">
-        <Button variant="contained" color="primary" onClick={handleSave}>
+        <Button variant="contained" color="primary" >
           Save Content
         </Button>
       </div>
