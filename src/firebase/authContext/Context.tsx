@@ -18,7 +18,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, initializeUser);
-    return unsubscribe; // Cleanup on component unmount
+    return unsubscribe;
   }, []);
 
   const initializeUser = (user) => {
