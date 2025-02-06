@@ -7,8 +7,8 @@ import DisplayData from './userfrom/Userdata'; // Import the display component
 const UserComponent = () => {
   return (
     <Provider store={Store}>
-      <div>
-        <h1>User Form Submission</h1>
+      <div className=' flex justify-center items-center flex-row'>
+        
         <FormComponent />
         <DisplayData />
       </div>

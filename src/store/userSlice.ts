@@ -10,13 +10,7 @@ interface FormData {
 }
 
 // Set initial state with correct types
-const initialState: FormData = {
-  id: 0,           // Initialize `id` as a number (0 or some other default number)
-  name: '',
-  email: '',
-  phone: '',
-  address: '',
-};
+const initialState: FormData[] = [];  // Change to an array of objects
 
 // Create a slice
 const formSlice = createSlice({
@@ -25,11 +19,15 @@ const formSlice = createSlice({
   reducers: {
     // Action to store form data
     setFormData: (state, action: PayloadAction<FormData>) => {
-      state.id = action.payload.id;
-      state.name = action.payload.name;
-      state.email = action.payload.email;
-      state.phone = action.payload.phone;
-      state.address = action.payload.address;
+      // Add new form data with a unique id
+      const newFormData = {
+        ...action.payload,
+        id: state.length > 0 ? state[state.length - 1].id + 1 : 1, // Increment the id based on previous state
+      };
+      state.push(newFormData);  // Push new data into the state array
+
+      // Log the current state after each update
+      console.log('Updated form data:', state);
     },
   },
 });

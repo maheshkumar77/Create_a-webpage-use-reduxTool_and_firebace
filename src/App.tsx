@@ -1,16 +1,19 @@
 import Counter from "./component/Counter";
 import RichTextEditor from "./textEditer/RichTextEditor";
 import UserComponent from "./userCompnent";
-
+import './App.css'
 
 const App = () => {
   return (
    <div className=" h-auto w-full flex justify-center items-center">
-    <div className=" flex justify-between gap-x-px h-[50vh]">
+    <div className="onediv">
     <Counter/>
-    {/* <RichTextEditor/> */}
-    <UserComponent/>
+    <RichTextEditor/>
     </div>
+   
+    <UserComponent/>
+    
+    
    </div>
   );
 };

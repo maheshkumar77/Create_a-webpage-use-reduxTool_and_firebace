@@ -1,59 +1,93 @@
 import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // Import Quill styles for the editor
-import { useLocalStorage } from './useLocalStorage'; // Custom hook to handle localStorage
+import 'react-quill/dist/quill.snow.css'; // Import Quill styles
+import { Button } from '@mui/material';
+import { ToastContainer, toast } from 'react-toastify'; // For notifications
+import 'react-toastify/dist/ReactToastify.css'; // Toastify styles
+import './reachaditer.css'; // Custom styles for the editor
 
-// Tailwind CSS and Quill toolbar configuration
-const toolbarOptions = [
-  [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
-  [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-  [{ 'align': [] }],
-  ['bold', 'italic', 'underline'],
-  [{ 'color': [] }, { 'background': [] }],
-  ['link'],
-  ['blockquote', 'code-block'],
-  ['clean']
-];
+const RichTextEditor = () => {
+  const [editorContent, setEditorContent] = useState<string>('');
+  const [savedContent, setSavedContent] = useState<string>('');
+  const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false);
 
-const RichTextEditor: React.FC = () => {
-  // Local state for editor content
-  const [editorValue, setEditorValue] = useLocalStorage<string>('rich-text', '');
-
+  // Load the content from localStorage when the component mounts
   useEffect(() => {
-    // Load the editor value from localStorage or set to an empty string
-    setEditorValue(editorValue);
-  }, [editorValue]);
+    const savedData = localStorage.getItem('userData');
+    if (savedData) {
+      try {
+        const parsedData = JSON.parse(savedData);
+        if (Array.isArray(parsedData) && parsedData.length > 0) {
+          setEditorContent(parsedData[0].content); // Assuming the content is in the 'content' field
+          setSavedContent(parsedData[0].content); // Set saved content for display
+          setIsDataLoaded(true);
+        }
+      } catch (error) {
+        console.error('Error loading user data:', error);
+      }
+    }
+  }, []);
 
-  // Handle editor change event
-  const handleChange = (value: string) => {
-    setEditorValue(value); // Save the updated value in localStorage
+  // Function to handle editor changes
+  const handleEditorChange = (content: string) => {
+    setEditorContent(content);
+  };
+
+  // Save the content to localStorage
+  const handleSave = () => {
+    if (editorContent) {
+      const updatedData = {
+        id: 1, // Assuming one user or you can generate IDs dynamically
+        content: editorContent,
+      };
+      // Save to localStorage
+      localStorage.setItem('userData', JSON.stringify([updatedData])); 
+      setSavedContent(editorContent); // Update the saved content display
+      toast.success('Data saved successfully!');
+    }
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="w-full max-w-3xl bg-white rounded-lg shadow-lg p-8">
-        <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">Rich Text Editor</h2>
+    <div className="editor-container">
+      {/* <h2 className="editor-title">Rich Text Editor</h2> */}
+      {isDataLoaded ? (
+        <ReactQuill
+          value={editorContent}
+          onChange={handleEditorChange}
+          theme="snow"
+          modules={{
+            toolbar: [
+              [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+              [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+              [{ 'indent': '-1' }, { 'indent': '+1' }],
+              ['bold', 'italic', 'underline'],
+              ['link'],
+              ['image'],
+              [{ 'align': [] }],
+              ['blockquote', 'code-block'],
+            ],
+          }}
+          className="editor"
+        />
+      ) : (
+        <p>Loading user data...</p>
+      )}
 
-        {/* React Quill Editor */}
-        <div className="mb-6">
-          <ReactQuill
-            value={editorValue}
-            onChange={handleChange}
-            modules={{ toolbar: toolbarOptions }}
-            placeholder="Write your content here..."
-            className="h-48 rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-full"
-          />
-        </div>
-
-        {/* Display current content below editor */}
-        <div className="mt-6 p-4 border-t">
-          <h3 className="font-semibold text-lg text-gray-700 mb-4">Preview:</h3>
-          <div
-            className="text-lg text-gray-800"
-            dangerouslySetInnerHTML={{ __html: editorValue }} // Rendering the editor content as HTML
-          ></div>
-        </div>
+      <div className="actions">
+        <Button variant="contained" color="primary" onClick={handleSave}>
+          Save Content
+        </Button>
       </div>
+
+      {/* <div className="saved-content">
+        <h3>Saved Content</h3>
+        <div className="saved-content-display">
+          <div dangerouslySetInnerHTML={{ __html: savedContent }} />
+        </div>
+      </div> */}
+
+      {/* Toast notification container */}
+      <ToastContainer />
     </div>
   );
 };

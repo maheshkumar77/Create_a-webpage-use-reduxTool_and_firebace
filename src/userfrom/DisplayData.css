@@ -1,0 +1,93 @@
+/* Container for the entire form */
+.display-data-container {
+  width: 50%;
+  height: auto;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Title styling */
+.title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+  font-weight: 600;
+}
+
+/* Form container styling */
+.form-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Form input fields */
+.form-input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+}
+
+/* Styling for the buttons */
+.button-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+button.MuiButton-root {
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+button.MuiButton-root:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+button.MuiButton-root:active {
+  background-color: #4caf50;
+  transform: scale(1);
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .display-data-container {
+    width: 90%;
+    margin: 20px auto;
+    padding: 15px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .form-input {
+    font-size: 0.9rem;
+  }
+
+  button.MuiButton-root {
+    font-size: 0.9rem;
+    padding: 10px 18px;
+  }
+}
